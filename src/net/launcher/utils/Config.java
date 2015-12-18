@@ -28,7 +28,11 @@ public class Config {
 	}
 	
 	public static Object get(String key, Object d){
-		Object o = config.get(key);
-		return (o != null ? o : d);
+		try{
+			Object o = config.get(key);
+			return (o != null ? o : d);
+		}catch(NullPointerException e){
+			return d;
+		}
 	}
 }

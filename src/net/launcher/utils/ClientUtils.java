@@ -15,6 +15,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -187,7 +188,7 @@ public class ClientUtils {
 	}
 	
 	public static File getAssetsDir(){
-		return new File(Settings.workingDir.replaceAll(Settings.APPDATA, getAppdata().toString()));
+		return new File(Settings.workingDir.replaceAll(Pattern.quote(Settings.APPDATA), getAppdata().toString()));
 	}
 	
 	
