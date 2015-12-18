@@ -29,6 +29,8 @@ public class Settings {
 	public static String key1 = "0123456789ABCDEF"; //16значный ключ
 	public static String key2 = "0123456789ABCDEF";
 	
+	public static String version = "Cadaveria";
+	
 	public static void onStartMinecraft(){}
 	
 }
