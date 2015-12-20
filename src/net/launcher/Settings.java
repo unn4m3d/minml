@@ -16,7 +16,7 @@ public class Settings {
 	
 	public static String title = "The Sinner";
 	
-	public static String webpath = "http://the-sinner.net/site";
+	public static String webpath = "http://unn4m3d.ddns.net/mc2";
 	
 	public static boolean useAutoenter = false;
 	public static boolean patchDir = false;
@@ -25,7 +25,7 @@ public class Settings {
 		new ServerInfo("The Sinner","1.7.10","the-sinner.net",25565)
 	};
 	
-	public static String protectionKey = "Change this if you aren't noob";
+	public static String protectionKey = "Test key";
 	public static String key1 = "0123456789ABCDEF"; //16значный ключ
 	public static String key2 = "0123456789ABCDEF";
 	

@@ -44,16 +44,16 @@ public class ClientUtils {
 	public static File getMcDir()
 	{
 		String home = System.getProperty("user.home", "");
-		String path = Settings.clientPath.replaceAll("{C}",TempSettings.client.getName());
+		String path = Settings.clientPath.replaceAll(Pattern.quote(Settings.CLIENTNAME),TempSettings.client.getName());
 		switch(getPlatform())
 		{
-			case 1: return new File(path.replaceAll("{A}",home));
+			case 1: return new File(path.replaceAll(Pattern.quote(Settings.APPDATA),home));
 			case 2:
 				String appData = System.getenv("SYSTEMDRIVE");
-				if(appData != null) return new File(path.replaceAll("{A}", home));
-				else return new File(path.replaceAll("{A}",home));
+				if(appData != null) return new File(path.replaceAll(Pattern.quote(Settings.APPDATA), home));
+				else return new File(path.replaceAll(Pattern.quote(Settings.APPDATA),home));
 			//case 3: return new File(home, path);
-			default: return new File(path.replaceAll("{A}",home));
+			default: return new File(path.replaceAll(Pattern.quote(Settings.APPDATA),home));
 		}
 	}
 	
