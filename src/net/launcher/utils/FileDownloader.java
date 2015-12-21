@@ -10,9 +10,10 @@ import java.util.ArrayList;
 public class FileDownloader {
 	public String file;
 	public String outFile;
-	public double speed;
+	//public double speed;
 	//private long downloadStartTime;
 	protected ArrayList<ActionListener> update;
+	public long size = 0;
 	
 	public void addUpdateListener(ActionListener a){
 		update.add(a);
@@ -39,6 +40,8 @@ public class FileDownloader {
 			conn = new URL(file).openConnection();
 			in = conn.getInputStream();
 			//downloadStartTime = System.getCurrentTimeMillis();
+			size = conn.getHeaderFieldInt("content-length",0);
+			
 			int read = 0;
 			long totalRead = 0;
 			while((read = in.read(buffer)) != -1){
