@@ -12,7 +12,7 @@ public class FileDownloader {
 	public String outFile;
 	//public double speed;
 	//private long downloadStartTime;
-	protected ArrayList<ActionListener> update;
+	protected ArrayList<ActionListener> update = new ArrayList<ActionListener>();
 	public long size = 0;
 	
 	public void addUpdateListener(ActionListener a){
@@ -28,6 +28,7 @@ public class FileDownloader {
 	public FileDownloader(String file, String out){
 		this.file = file;
 		this.outFile = out;
+		System.out.println(file + "\n" + out);
 	}
 	
 	public void start() throws MalformedURLException, IOException, Exception{
@@ -50,8 +51,6 @@ public class FileDownloader {
 				onUpdate((Object)totalRead);
 			}
 			
-        }catch(Exception e){
-			throw e;
 		}finally{
 			try{
 				if(out != null){

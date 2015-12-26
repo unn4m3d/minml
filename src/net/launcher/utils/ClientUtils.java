@@ -87,18 +87,21 @@ public class ClientUtils {
 			}else{
 				result.add(f);
 			}
+			//System.out.println(f.toString());
 			
 		}
+		//System.out.println(result.toString());
 		return result;
 	}
 	
 	
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	public static void updateURLs(){
 		urls = new ArrayList<URL>();
 		File[] dirs = new File[]{
 			new File(getMcDir(),"bin"),
-			new File(getMcDir(),"libraries")
+			new File(getMcDir(),"libraries"),
+			new File(getMcDir(),"versions")
 		};
 		
 		for(File d : dirs){
@@ -106,7 +109,11 @@ public class ClientUtils {
 			ArrayList<File> l = list(d,true);
 			for(File f : l){
 				try{
-				if(f.getName().matches("\\.jar")) urls.add(f.toURL());
+				//if(f.getName().matches("jar")) {
+					//System.out.println(f.toString());
+					urls.add(f.toURI().toURL());
+					//System.out.println(f.toString());
+				//}
 				}catch(MalformedURLException e){
 					e.printStackTrace();
 				}

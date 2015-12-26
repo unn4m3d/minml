@@ -53,7 +53,11 @@ public class Crypt{
 	public static String inttostr(String text)
 	{
 		String res = "";
-		for(int i = 0; i < text.split("-").length; i++) res += (char)Integer.parseInt(text.split("-")[i]);
+		if(text.length()%2==1) text += "0";
+		//for(int i = 0; i < text.split("-").length; i++) res += (char)Integer.parseInt(text.split("-")[i]);
+		for(int i = 0; i < text.length(); i+=2){
+			res += (char)(Integer.parseInt("" + text.charAt(i) + text.charAt(i+1),16));
+		}
 		return res;
 	}
 }

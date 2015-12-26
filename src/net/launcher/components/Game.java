@@ -1,5 +1,7 @@
 package net.launcher.components;
 
+import io.github.unn4m3d.xmml.web.HTTPUtils;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +11,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,6 +21,8 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import org.json.simple.*;
+
+import biz.source_code.base64Coder.Base64Coder;
 
 
 import net.minecraft.Launcher;
@@ -40,18 +45,21 @@ public class Game extends JFrame
 	Timer timer = null;
 	int i = 0;
 	
-	public Game(JSONObject answer)
+	public Game(JSONObject answer) throws Throwable
 	{
 		
 		String bin = ClientUtils.getMcDir().toString() + File.separator + "bin" + File.separator;	
 		cl = new eURLClassLoader(ClientUtils.urls.toArray(new URL[ClientUtils.urls.size()]));
+		for(URL u : ClientUtils.urls) System.out.println(u.getPath());
 		
 		boolean old = false;
 		try
 		{   
 			cl.loadClass("net.minecraft.client.Minecraft");
 			old = true;
-		} catch(Exception e) {}
+		} catch(Exception e) {
+			//e.printStackTrace();
+		}
 		String user = (String) answer.get("user");
 		String session = Crypt.xorencode((String)answer.get("sid"), Settings.protectionKey);
 		
@@ -72,8 +80,8 @@ public class Game extends JFrame
 			});
 			check.start();*/ //Будет восстановлено в следующих версиях
 			
-			try
-			{
+			//try
+			//{
 				addWindowListener(new WindowListener()
 				{
 					public void windowOpened(WindowEvent e) {}
@@ -128,10 +136,10 @@ public class Game extends JFrame
 				}*/
 				mcapplet.init();
 				mcapplet.start();
-			} catch(Exception e)
+			/*} catch(Exception e)
 			{
 				e.printStackTrace();
-			}
+			}*/
 			
 		} else {
 			/*Thread check = new Thread(new Runnable() {
@@ -152,10 +160,10 @@ public class Game extends JFrame
 			    }
 			    });
 			check.start();*/
-			try
-			{
+			//try
+			//{
 				System.out.println("Running Minecraft");
-				String jarpath = ClientUtils.getMcDir().toString() + File.separator + "bin" + File.separator;
+				String jarpath = ClientUtils.getMcDir().toString() + File.separator + "versions" + File.separator + TempSettings.client.version + File.separator;
 				String minpath = ClientUtils.getMcDir().toString();
 				String assets = ClientUtils.getAssetsDir().toString() + File.separator;
 				List<String> params = new ArrayList<String>();
@@ -185,9 +193,12 @@ public class Game extends JFrame
 				try {
 					cl.loadClass("com.mojang.authlib.Agent");
 					params.add("--accessToken");
-					params.add(session);
+					params.add(Base64Coder.encodeString(session));
 					params.add("--uuid");
-					params.add(Crypt.xorencode(Crypt.inttostr((String)answer.get("sid")), Settings.protectionKey));
+					params.add( Base64Coder.encodeString(
+							Crypt.xorencode(/*Crypt.inttostr*/((String)answer.get("sid")), Settings.protectionKey)
+							)
+					);
 					params.add("--userProperties");
 					params.add("{}");
 					params.add("--assetIndex");
@@ -210,7 +221,7 @@ public class Game extends JFrame
 					params.add(assets+"assets");
 				}
 				boolean tweakClass = false;
-				try {
+				try{
 					cl.loadClass("com.mumfrey.liteloader.launch.LiteLoaderTweaker");
 					params.add("--tweakClass");
 					params.add("com.mumfrey.liteloader.launch.LiteLoaderTweaker");
@@ -230,17 +241,20 @@ public class Game extends JFrame
 				}
 				
                 //Frame.main.setVisible(false);
-				try
-				{
+				/*try
+				{*/
 					Class<?> start = cl.loadClass(Class);
 					Method main = start.getMethod("main", new Class[] { String[].class });
-					main.invoke(null, new Object[] { params.toArray(new String[0]) });
-				} catch (Exception e)
+					System.out.println(HTTPUtils.join(params, " "));
+					main.invoke(null, new Object[] { params.toArray(new String[params.size()]) });
+				/*} catch (ClassNotFoundException e)
 				{
 					e.printStackTrace();
 					System.exit(0);
-				}
-			} catch (Exception e) {}
+				}*/
+			/*} catch (Exception e) {
+				e.printStackTrace();
+			}*/
 		}
 	}
 }
